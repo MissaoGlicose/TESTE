@@ -2,133 +2,203 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=1600, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Jogo Missão Glicose</title>
   <script src="https://www.youtube.com/iframe_api"></script>
+
   <style>
     body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background-color: #6495ED;
+      color: #333;
+      line-height: 1.6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      flex-direction: column;
+      text-align: center;
+      padding: 0px;
       margin: 0;
-      padding: 0;
+      overflow: hidden;
       width: 1600px;
       height: 900px;
-      overflow: hidden;
-      font-family: 'Comic Sans MS', sans-serif;
-      background: linear-gradient(to top, #87CEEB, #B0E0E6);
       position: relative;
     }
 
-    /* CONTAINERS */
-    .game-container {
+    header {
+      background-color: #fff;
+      color: white;
+      padding: 30px;
+      width: 70%;
+      max-width: 800px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 15px;
+      margin: 0 auto;
+    }
+	 
+    /* Animação aplicada apenas no título */
+    h1 {
+      color: #8FBC8F;
+      font-family: 'Comic Sans MS', sans-serif;
+      animation: growShrink 5s ease-in-out infinite;
+      font-size: 2.2rem;
+    }
+
+    /* Animação para aumentar e diminuir o título */
+    @keyframes growShrink {
+      0% {
+        transform: scale(1);
+      }
+      51% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+	  
+    button:hover {
+      transform: scale(1.05);
+      transition: 0.3s;
+    }
+    
+    h2 {
+      color: #8FBC8F;
+      font-family: 'Comic Sans MS', sans-serif;
+      font-size: 1.8rem;
+    }
+
+    /* Animação para NUVENS */
+    .nuvem {
       position: absolute;
-      width: 800px;
+      animation: flutuar 50s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes flutuar {
+      0% {
+        transform: translateX(-1600px);
+      }
+      100% {
+        transform: translateX(1600px);
+      }
+    }
+
+    /* Animação para Personagens */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+    
+    .personagem {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .question {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      font-weight: bold;
+      color: #555;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 80%;
+      max-width: 800px;
+      margin: 0 auto 20px;
+      border: 2px solid #FFB6C1;
+    }
+
+    .game-container {
       background-color: #ffffff;
       border-radius: 20px;
-      padding: 40px;
+      padding: 30px;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      width: 80%;
+      max-width: 1000px;
       border: 5px solid #FFCBDB;
-      text-align: center;
+      margin: 20px auto;
+      position: relative;
     }
 
-    /* TEXTO */
-    h1, h2 {
-      color: #8FBC8F;
-      margin-bottom: 30px;
-    }
-
-    h1 {
-      font-size: 36px;
-      animation: growShrink 5s ease-in-out infinite;
-    }
-
-    h2 {
-      font-size: 28px;
-    }
-
-    /* BOTÕES */
     button {
       background-color: #FFB84D;
       color: #2c6e8f;
       border: none;
       padding: 15px 40px;
-      margin: 15px;
-      font-size: 20px;
+      margin: 10px;
+      font-size: 18px;
       border-radius: 25px;
       cursor: pointer;
-      transition: all 0.3s;
-      min-width: 250px;
+      font-family: 'Comic Sans MS', sans-serif;
     }
 
     button:hover {
-      transform: scale(1.05);
       background-color: #ff6f61;
+    }
+
+    button:active {
+      background-color: #ff3d2e;
     }
 
     .hidden {
       display: none;
     }
 
-    /* IMAGENS */
-    .personagem {
-      position: absolute;
-      animation: float 3s ease-in-out infinite;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 0.9rem;
+    }
+    
+    th, td {
+      padding: 8px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+    
+    th {
+      background-color: #f2f2f2;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+	  
+    /* Estilo para o fundo escuro do popup */
+    #popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex; 
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
     }
 
-    #diabetesImage {
-      width: 300px;
-      top: 50px;
-      right: 100px;
+    /* Estilo do conteúdo do popup */
+    .popup-content {
+      background-color: white;
+      padding: 20px;
+      border-radius: 15px;
+      width: 80%;
+      max-width: 700px;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+      position: relative;
+      text-align: center;
     }
-
-    #Coelho1 {
-      width: 300px;
-      bottom: 50px;
-      right: 100px;
-    }
-
-    #Femino {
-      width: 200px;
-      bottom: 200px;
-      left: 100px;
-    }
-
-    #Masculino {
-      width: 200px;
-      top: 100px;
-      left: 100px;
-    }
-
-    .nuvem {
-      position: absolute;
-      width: 1900px;
-      top: -350px;
-      left: 50%;
-      transform: translateX(-50%);
-      animation: flutuar 50s linear infinite;
-      z-index: -1;
-    }
-
-    /* ANIMAÇÕES */
-    @keyframes growShrink {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
-    }
-
-    @keyframes flutuar {
-      0% { transform: translate(-150%, -50%); }
-      100% { transform: translate(50%, -50%); }
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-15px); }
-      100% { transform: translateY(0px); }
-    }
-
-    /* MODAL DE VÍDEO */
+    
+    /* Modal de vídeo */
     .modal {
       display: none;
       position: fixed;
@@ -138,110 +208,130 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-
+    
     .modal-content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
       background-color: black;
       padding: 20px;
       border-radius: 10px;
+      position: relative;
+      width: 800px;
+      height: 450px;
     }
-
+    
     .close {
       position: absolute;
       top: 10px;
-      right: 10px;
-      font-size: 30px;
+      right: 5px;
+      font-size: 40px;
       cursor: pointer;
-      color: white;
+      padding: 5px;
+      color: #333;
+      background-color: transparent;
+      border: none;
+      border-radius: 50%;
+    }
+    
+    .close:hover {
+      color: #f00;
     }
 
-    /* POPUP DE REGRAS */
-    #popup {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      z-index: 1000;
-    }
+    /* Estilo específico para telas pequenas (como celulares) */
+    @media (max-width: 768px) {
+      body {
+        width: 100%;
+        height: auto;
+        overflow: auto;
+      }
+      
+      .nuvem {
+        animation: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+      }
 
-    .popup-content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background-color: white;
-      padding: 30px;
-      border-radius: 15px;
-      width: 600px;
-      max-height: 700px;
-      overflow-y: auto;
-    }
+      #diabetesImage, #Coelho1, #Femino, #Masculino {
+        display: none;
+      }
 
-    /* TABELA */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
+      .game-container {
+        padding: 15px;
+        width: 90%;
+      }
 
-    th, td {
-      padding: 10px;
-      text-align: left;
-      border: 1px solid #ddd;
-    }
+      button {
+        font-size: 16px;
+        padding: 10px 20px;
+      }
 
-    th {
-      background-color: #f2f2f2;
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .modal-content {
+        width: 90%;
+        height: auto;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- MENU PRINCIPAL -->
+
   <div id="menu" class="game-container">
-    <h1>Bem-vindo à Missão Glicose!</h1>
+    <h1>Bem-vindo á Missão Glicose!</h1>
     <button id="startButton">Começar o Jogo</button>
     <button id="videoButton">Ver Vídeo</button>
   </div>
-
-  <!-- MODAL DE VÍDEO -->
+	
+  <!-- Modal de Vídeo -->
   <div id="videoModal" class="modal">
     <div class="modal-content">
       <span class="close" id="closeModal">&times;</span>
-      <iframe id="videoFrame" width="800" height="450" 
-              src="https://www.youtube.com/embed/4Hfh6D0GuLc?si=GrRMf97ptLXoK4ub" 
-              frameborder="0" 
-              allowfullscreen></iframe>
+      <div id="videoContainer">
+        <iframe id="videoFrame" width="800" height="450" 
+          src="https://www.youtube.com/embed/4Hfh6D0GuLc?si=GrRMf97ptLXoK4ub" 
+          title="YouTube video player" frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+          referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+        </iframe>
+      </div>
     </div>
   </div>
 
-  <!-- POPUP DE REGRAS -->
+  <!-- Áudios -->
+  <audio id="som" src="mouseclick.mp3" preload="auto"></audio>
+  <audio id="somPontuacao" src="som_pontuacao.mp3" preload="auto"></audio>
+	
+  <!-- IMAGENS -->
+  <img id="diabetesImage" src="Diabetes2.png" alt="Foto" style="width: 350px; height: auto; position: absolute; top: 50px; left: 1100px;">
+  <img id="Coelho1" class="personagem" src="DUVIDA.png" alt="personagem" style="width: 350px; height: auto; position: absolute; top: 500px; left: 1200px;">
+  <img id="Femino" class="personagem" src="3.png" alt="personagem" style="width: 150px; height: auto; position: absolute; top: 450px; left: 100px;">
+  <img id="Masculino" class="personagem" src="normal2.png" alt="personagem" style="width: 150px; height: auto; position: absolute; top: 80px; left: 100px;">
+  <img id="Nuvem" class="nuvem" src="nuvens4.png" alt="nuvem" style="width: 1600px; height: auto; position: absolute; top:-250px; left: 0;">
+  <img id="Nuvem2" class="nuvem" src="gota de sangue.png" alt="nuvem" style="width: 150px; height: auto; position: absolute; top: 450px; left: 1300px;">
+  <img id="Nuvem3" class="nuvem" src="gota de sangue.png" alt="nuvem" style="width: 150px; height: auto; position: absolute; top: 50px; left: 200px;">
+	
+  <!-- Popup de Regras -->
   <button onclick="showPopup()" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%);">Regras</button>
+
   <div id="popup">
     <div class="popup-content">
       <button onclick="closePopup()">Fechar</button>
       <button onclick="showContent('casas')">Casas de Atividades</button>
       <button onclick="showContent('comoJogar')">Como Jogar</button>
       <button onclick="showContent('hidratos')">Tabela de Hidratos de Carbono</button>
-      <div id="content"></div>
+      <div id="content">
+        <!-- O conteúdo será exibido aqui -->
+      </div>
     </div>
   </div>
-
-  <!-- ELEMENTOS GRÁFICOS -->
-  <img id="diabetesImage" src="Diabetes2.png" alt="Diabetes" class="personagem">
-  <img id="Coelho1" src="DUVIDA.png" alt="Personagem Coelho" class="personagem">
-  <img id="Femino" src="3.png" alt="Personagem Feminino" class="personagem">
-  <img id="Masculino" src="normal2.png" alt="Personagem Masculino" class="personagem">
-  <img class="nuvem" src="nuvens4.png" alt="Nuvem">
-  <img src="gota de sangue.png" alt="Gota de sangue" style="width: 150px; position: absolute; top: 300px; right: 200px;">
-  <img src="gota de sangue.png" alt="Gota de sangue" style="width: 150px; position: absolute; top: 100px; left: 300px;">
-
   <!-- ÁREA DE JOGO -->
   <div id="game" class="game-container hidden">
     <h2 id="questionTitle"></h2>
