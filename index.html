@@ -2,30 +2,112 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=1600, initial-scale=1.0">
   <title>Jogo Missão Glicose</title>
   <script src="https://www.youtube.com/iframe_api"></script>
   <style>
-    /* RESET E ESTILOS GERAIS */
-    * {
-      box-sizing: border-box;
+    body {
       margin: 0;
       padding: 0;
-    }
-    
-    body {
+      width: 1600px;
+      height: 900px;
+      overflow: hidden;
       font-family: 'Comic Sans MS', sans-serif;
       background: linear-gradient(to top, #87CEEB, #B0E0E6);
-      color: #333;
-      line-height: 1.6;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      position: relative;
+    }
+
+    /* CONTAINERS */
+    .game-container {
+      position: absolute;
+      width: 800px;
+      background-color: #ffffff;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 5px solid #FFCBDB;
       text-align: center;
-      overflow-x: hidden;
-      touch-action: manipulation;
+    }
+
+    /* TEXTO */
+    h1, h2 {
+      color: #8FBC8F;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: 36px;
+      animation: growShrink 5s ease-in-out infinite;
+    }
+
+    h2 {
+      font-size: 28px;
+    }
+
+    /* BOTÕES */
+    button {
+      background-color: #FFB84D;
+      color: #2c6e8f;
+      border: none;
+      padding: 15px 40px;
+      margin: 15px;
+      font-size: 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: all 0.3s;
+      min-width: 250px;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      background-color: #ff6f61;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* IMAGENS */
+    .personagem {
+      position: absolute;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    #diabetesImage {
+      width: 300px;
+      top: 50px;
+      right: 100px;
+    }
+
+    #Coelho1 {
+      width: 300px;
+      bottom: 50px;
+      right: 100px;
+    }
+
+    #Femino {
+      width: 200px;
+      bottom: 200px;
+      left: 100px;
+    }
+
+    #Masculino {
+      width: 200px;
+      top: 100px;
+      left: 100px;
+    }
+
+    .nuvem {
+      position: absolute;
+      width: 1900px;
+      top: -350px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: flutuar 50s linear infinite;
+      z-index: -1;
     }
 
     /* ANIMAÇÕES */
@@ -36,166 +118,14 @@
     }
 
     @keyframes flutuar {
-      0% { transform: translateX(-100vw); }
-      100% { transform: translateX(100vw); }
+      0% { transform: translate(-150%, -50%); }
+      100% { transform: translate(50%, -50%); }
     }
 
     @keyframes float {
       0% { transform: translateY(0px); }
       50% { transform: translateY(-15px); }
       100% { transform: translateY(0px); }
-    }
-
-    /* ELEMENTOS DE JOGO */
-    .game-container {
-      background-color: #ffffff;
-      border-radius: 20px;
-      padding: 3vmax;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-      width: 90vw;
-      max-width: 800px;
-      margin: 2vmin auto;
-      border: 5px solid #FFCBDB;
-      position: relative;
-      z-index: 10;
-    }
-
-    h1, h2 {
-      color: #8FBC8F;
-      font-family: 'Comic Sans MS', sans-serif;
-      margin-bottom: 2vmin;
-    }
-
-    h1 {
-      font-size: clamp(1.5rem, 4vw, 2.5rem);
-      animation: growShrink 5s ease-in-out infinite;
-    }
-
-    h2 {
-      font-size: clamp(1.2rem, 3vw, 2rem);
-    }
-
-    button {
-      background-color: #FFB84D;
-      color: #2c6e8f;
-      border: none;
-      padding: 1.5vmax 3vmax;
-      margin: 1vmax;
-      font-size: clamp(16px, 2vmax, 24px);
-      border-radius: 25px;
-      cursor: pointer;
-      min-width: 200px;
-      transition: all 0.3s;
-    }
-
-    button:hover {
-      transform: scale(1.05);
-      background-color: #ff6f61;
-    }
-
-    button:active {
-      background-color: #ff3d2e;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    /* ELEMENTOS GRÁFICOS */
-    .personagem {
-      width: 15vmax;
-      height: auto;
-      position: fixed;
-      animation: float 3s ease-in-out infinite;
-      z-index: 5;
-    }
-
-    #diabetesImage {
-      width: 25vmin;
-      position: fixed;
-      top: 5%;
-      right: 5%;
-      z-index: 5;
-    }
-
-    #Coelho1 {
-      bottom: 5%;
-      right: 5%;
-    }
-
-    #Femino {
-      bottom: 20%;
-      left: 5%;
-    }
-
-    #Masculino {
-      top: 15%;
-      left: 5%;
-    }
-
-    .nuvem {
-      width: 100vmax;
-      position: fixed;
-      top: -10%;
-      animation: flutuar 50s linear infinite;
-      z-index: 1;
-      opacity: 0.8;
-    }
-
-    /* COMPONENTES DO JOGO */
-    .question {
-      font-size: clamp(1rem, 2vmax, 1.4rem);
-      margin-bottom: 20px;
-      font-weight: bold;
-      color: #555;
-      background-color: #fff;
-      padding: 3vmin;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      border: 2px solid #FFB6C1;
-    }
-
-    #options {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    #options button {
-      width: 100%;
-      max-width: 400px;
-    }
-
-    /* POPUP DE REGRAS */
-    #popup {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: rgba(0, 0, 0, 0.7);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .popup-content {
-      background-color: white;
-      padding: 3vmin;
-      border-radius: 15px;
-      width: 90vw;
-      max-width: 500px;
-      max-height: 80vh;
-      overflow-y: auto;
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-      position: relative;
-    }
-
-    .popup-content button {
-      margin: 1vmin;
-      width: calc(100% - 2vmin);
     }
 
     /* MODAL DE VÍDEO */
@@ -208,17 +138,16 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0, 0, 0, 0.8);
-      align-items: center;
-      justify-content: center;
     }
 
     .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       background-color: black;
       padding: 20px;
       border-radius: 10px;
-      position: relative;
-      width: 90vw;
-      max-width: 800px;
     }
 
     .close {
@@ -228,72 +157,48 @@
       font-size: 30px;
       cursor: pointer;
       color: white;
-      background-color: transparent;
-      border: none;
     }
 
-    .video-wrapper {
-      position: relative;
-      padding-bottom: 56.25%; /* 16:9 */
-      height: 0;
-      overflow: hidden;
-    }
-
-    .video-wrapper iframe {
-      position: absolute;
+    /* POPUP DE REGRAS */
+    #popup {
+      display: none;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+    }
+
+    .popup-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      width: 600px;
+      max-height: 700px;
+      overflow-y: auto;
     }
 
     /* TABELA */
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 2vmin;
-      font-size: clamp(12px, 1.5vmax, 16px);
+      margin-top: 20px;
     }
 
     th, td {
-      padding: 1vmin;
+      padding: 10px;
       text-align: left;
       border: 1px solid #ddd;
     }
 
     th {
       background-color: #f2f2f2;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    /* RESPONSIVIDADE PARA MOBILE */
-    @media (max-width: 768px) {
-      .game-container {
-        padding: 4vmin;
-        width: 95vw;
-      }
-
-      button {
-        padding: 3vmin;
-        font-size: 4vmin;
-        min-width: 70vw;
-      }
-
-      #diabetesImage, #Coelho1, #Femino, #Masculino {
-        display: none;
-      }
-
-      .nuvem {
-        animation: none;
-        width: 150%;
-      }
-
-      .personagem {
-        width: 25vmin;
-      }
     }
   </style>
 </head>
@@ -309,17 +214,15 @@
   <div id="videoModal" class="modal">
     <div class="modal-content">
       <span class="close" id="closeModal">&times;</span>
-      <div class="video-wrapper">
-        <iframe id="videoFrame" src="https://www.youtube.com/embed/4Hfh6D0GuLc?si=GrRMf97ptLXoK4ub" 
-                title="YouTube video player" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                allowfullscreen></iframe>
-      </div>
+      <iframe id="videoFrame" width="800" height="450" 
+              src="https://www.youtube.com/embed/4Hfh6D0GuLc?si=GrRMf97ptLXoK4ub" 
+              frameborder="0" 
+              allowfullscreen></iframe>
     </div>
   </div>
 
   <!-- POPUP DE REGRAS -->
-  <button onclick="showPopup()" class="regras-btn">Regras</button>
+  <button onclick="showPopup()" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%);">Regras</button>
   <div id="popup">
     <div class="popup-content">
       <button onclick="closePopup()">Fechar</button>
@@ -336,13 +239,13 @@
   <img id="Femino" src="3.png" alt="Personagem Feminino" class="personagem">
   <img id="Masculino" src="normal2.png" alt="Personagem Masculino" class="personagem">
   <img class="nuvem" src="nuvens4.png" alt="Nuvem">
-  <img class="nuvem" src="gota de sangue.png" alt="Gota de sangue" style="width: 150px; top: 20%; left: 10%; animation-delay: 5s;">
-  <img class="nuvem" src="gota de sangue.png" alt="Gota de sangue" style="width: 150px; top: 70%; right: 10%; animation-delay: 10s;">
+  <img src="gota de sangue.png" alt="Gota de sangue" style="width: 150px; position: absolute; top: 300px; right: 200px;">
+  <img src="gota de sangue.png" alt="Gota de sangue" style="width: 150px; position: absolute; top: 100px; left: 300px;">
 
   <!-- ÁREA DE JOGO -->
   <div id="game" class="game-container hidden">
     <h2 id="questionTitle"></h2>
-    <div id="selectedMenu" style="font-weight: bold; color: #006400; margin-bottom: 15px;"></div>
+    <div id="selectedMenu" style="font-weight: bold; color: #006400; margin-bottom: 20px;"></div>
     <div id="options"></div>
   </div>
 
@@ -351,10 +254,6 @@
     <h2>Sua pontuação final: <span id="finalScore">0</span></h2>
     <button onclick="restartGame()">Recomeçar</button>
   </div>
-
-  <!-- ÁUDIOS -->
-  <audio id="som" src="mouseclick.mp3" preload="auto"></audio>
-  <audio id="somPontuacao" src="som_pontuacao.mp3" preload="auto"></audio>
 
   <script>
     // VARIÁVEIS DO JOGO
@@ -513,7 +412,7 @@
     function startGame() {
       document.getElementById("menu").classList.add("hidden");
       document.getElementById("game").classList.remove("hidden");
-      document.getElementById("diabetesImage").classList.add("hidden");
+      document.getElementById("diabetesImage").style.display = "none";
       showQuestion();
     }
 
@@ -553,7 +452,6 @@
     }
 
     function checkAnswer(option) {
-      tocarSom();
       if (option.correct) {
         currentScore += option.points;
       }
@@ -570,9 +468,6 @@
       document.getElementById("game").classList.add("hidden");
       document.getElementById("score").classList.remove("hidden");
       document.getElementById("finalScore").innerText = currentScore;
-      const somPontuacao = document.getElementById("somPontuacao");
-      somPontuacao.currentTime = 0;
-      somPontuacao.play();
     }
 
     function restartGame() {
@@ -580,18 +475,12 @@
       currentScore = 0;
       document.getElementById("score").classList.add("hidden");
       document.getElementById("menu").classList.remove("hidden");
-      document.getElementById("diabetesImage").classList.remove("hidden");
+      document.getElementById("diabetesImage").style.display = "block";
     }
 
     // FUNÇÕES AUXILIARES
-    function tocarSom() {
-      const som = document.getElementById("som");
-      som.currentTime = 0;
-      som.play();
-    }
-
     function showPopup() {
-      document.getElementById('popup').style.display = 'flex';
+      document.getElementById('popup').style.display = 'block';
     }
 
     function closePopup() {
@@ -833,31 +722,13 @@
 
     // EVENT LISTENERS
     document.getElementById("startButton").addEventListener("click", startGame);
-    document.querySelectorAll("button").forEach(button => {
-      button.addEventListener("click", tocarSom);
-    });
-
-    // MODAL DE VÍDEO
     document.getElementById("videoButton").addEventListener("click", function() {
-      document.getElementById("videoModal").style.display = "flex";
+      document.getElementById("videoModal").style.display = "block";
     });
-
     document.getElementById("closeModal").addEventListener("click", function() {
       document.getElementById("videoModal").style.display = "none";
       const iframe = document.getElementById("videoFrame");
       iframe.src = iframe.src; // Recarrega o iframe para parar o vídeo
-    });
-
-    // FECHAR MODAL CLICANDO FORA
-    window.addEventListener("click", function(event) {
-      if (event.target === document.getElementById("videoModal")) {
-        document.getElementById("videoModal").style.display = "none";
-        const iframe = document.getElementById("videoFrame");
-        iframe.src = iframe.src;
-      }
-      if (event.target === document.getElementById("popup")) {
-        closePopup();
-      }
     });
   </script>
 </body>
